@@ -1,7 +1,6 @@
-const { printDivider } = require('./utils');
+import { printDivider } from './utils.js';
 
-
-function schedule(videos, availabilityList) {
+export function schedule(videos, availabilityList) {
     console.log('-- Scheduling videos...');
 
     const longestAvailability = availabilityList.reduce((a, b) => Math.max(a, b), 0);
@@ -51,5 +50,3 @@ function schedule(videos, availabilityList) {
 
     return result;
 }
-
-exports.schedule = schedule;

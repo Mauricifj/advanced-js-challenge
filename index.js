@@ -1,7 +1,7 @@
-const { search, processTrendingTerms } = require('./youtube_service');
-const { defaultIgnoredTerms, getSearchTerms, getAvailability } = require('./command_parser');
-const { schedule } = require('./schedule_manager');
-const { printDivider } = require('./utils');
+import { search, processTrendingTerms } from './youtube_service.js';
+import { defaultIgnoredTerms, getSearchTerms, getAvailability } from './command_parser.js';
+import { schedule } from './schedule_manager.js';
+import { printDivider } from './utils.js';
 
 async function main() {
     printDivider();

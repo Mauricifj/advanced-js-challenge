@@ -1,5 +1,3 @@
-function printDivider() {
+export function printDivider() {
     console.log('=====================================');
 }
-
-exports.printDivider = printDivider;

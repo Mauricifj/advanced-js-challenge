@@ -1,6 +1,6 @@
-const { google } = require('googleapis');
+import { google } from 'googleapis';
 
-async function search(query, maxResults = 200) {
+export async function search(query, maxResults = 200) {
     console.log('-- Searching Youtube...');
 
     const maxYoutubeResults = 50;
@@ -80,7 +80,7 @@ function parseDuration(duration) {
     return Math.ceil(hours * 60 + minutes + seconds / 60);
 }
 
-function processTrendingTerms(videos, ignoredTerms = defaultIgnoreList) {
+export function processTrendingTerms(videos, ignoredTerms = defaultIgnoreList) {
     console.log('-- Processing Trending Terms...');
 
     const trendingTerms = {};
@@ -108,6 +108,3 @@ function processTrendingTerms(videos, ignoredTerms = defaultIgnoreList) {
         }
     }).sort((a, b) => b.count - a.count).splice(0, 5);
 }
-
-exports.search = search;
-exports.processTrendingTerms = processTrendingTerms;
