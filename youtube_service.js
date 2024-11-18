@@ -1,19 +1,19 @@
 import { google } from 'googleapis';
 
-export async function search(query, maxResults = 200) {
+export async function search(query, numberOfResults = 200) {
     console.log('-- Searching Youtube...');
 
     const maxYoutubeResults = 50;
-    const numberOfSearches = maxResults <= maxYoutubeResults ? 1 : Math.ceil(maxResults / maxYoutubeResults);
-    const maxResultsPerRequest = maxResults / numberOfSearches;
 
     const videoList = [];
     let nextPageToken;
+    let maxResults = numberOfResults;
 
-    for (let i = 0; i < numberOfSearches; i++) {
-        let partialResult = await searchYoutube(query, maxResultsPerRequest, nextPageToken);
-        nextPageToken = partialResult.nextPageToken;
-        videoList.push(...partialResult.items);
+    while (videoList.length < numberOfResults) {
+        maxResults = maxResults > maxYoutubeResults ? maxYoutubeResults : numberOfResults - videoList.length;
+        let partialResult = await searchYoutube(query, maxYoutubeResults, nextPageToken);
+        nextPageToken = partialResult?.nextPageToken;
+        videoList.push(...partialResult?.items);
     }
 
     return videoList;
@@ -84,16 +84,13 @@ export function processTrendingTerms(videos, ignoredTerms = defaultIgnoreList) {
     console.log('-- Processing Trending Terms...');
 
     const trendingTerms = {};
+    const isTermValid = term => term.match(/[^a-z0-9#]/) && !ignoredTerms.includes(term);
     videos.forEach(video => {
         const terms = [...video.title.split(' '), ...video.description.split(' ')];
         terms.forEach(term => {
             term = term.toLowerCase();
 
-            if (term.match(/[^a-z0-9#]/)) {
-                return;
-            }
-
-            if (ignoredTerms.includes(term)) {
+            if (isTermValid(term)) {
                 return;
             }
 
